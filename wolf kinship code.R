@@ -1,5 +1,3 @@
-#GITHUB TEST1
-
 
 # kinship relationships at equilibrium
 
@@ -46,16 +44,14 @@ dim(FemRelatedness)
 
 # for each female alive of age j : proba of mother alive
 ages <- 1:14
-PrAlive <- data.frame(age=ages, Mother=rep(NA,length(ages)),  GrandMother=rep(NA,length(ages)), Sisters = rep(NA, length(ages)),nfem=rep(NA,length(ages)))
+PrAlive <- data.frame(age=ages, Mother=rep(NA,length(ages)),  GrandMother=rep(NA,length(ages)),nfem=rep(NA,length(ages)))
 for(j in 1:14){
   Femagej <- dataF[dataF$age==j,]           ######### What does the comma do? ###########
   nFemAge <- nrow(Femagej)  # select subdata for age 1
-  PrAlive[j,5] <- nFemAge
+  PrAlive[j,4] <- nFemAge
   if(nFemAge==0){
     PrAlive[j,2] <- NA
     PrAlive[j,3] <- NA
-    PrAlive[j,4] <- NA
-    PrAlive[j,5] <- NA
   }else if(nFemAge>0){ 
     IDmothersj <-unique(Femagej$motherID) 
     PrAlive[j,2] <- sum(IDmothersj %in% IDMothersAlive) / nFemAge
@@ -64,51 +60,8 @@ for(j in 1:14){
     #above we get the mother ID of those individuals whose ID is found in the table of mothers of females of age j
     #i.e. the ID of the grandmothers of all females with age j. 
     PrAlive[j,3] <- sum(IDGrandMothersj %in% IDGrandMothersAlive) / nFemAge
-    
-    siblingsAlivej <- tapply(X=Femagej$who,INDEX=Femagej$motherID) ## Only splitting individuals of a given age by mother,
-    sistersdupAlivej <- split(x=Femagej$who,f=siblingsAlivej)      ## but siblings could be from different cohorts. 
-    sistersAlivej <- lapply(sistersdupAlivej,unique)
-    avg.nsistersj<-sum(lengths(sistersAlivej)*(lengths(sistersAlivej)-1))/sum(lengths(sistersAlivej))
-      PrAlive[j,4]<-avg.nsistersj
   }
 }
-
-#   IDMothers <- unique(dataall[dataF$age==j,'motherID']) # find mothers
-#  }
-#  if(sum(dataF$who %in% IDMothers)==0) {PrMotherAlive[j,2] <- 0
-#  }else if(sum(dataF$who %in% IDMothers)>0){
-#    IDMothersalive <- dataF$who[which(IDMothers %in% dataF$who)] # 14 check if mothers still alive  
-#    PrMotherAlive[j,2] <- (sum(dataF[dataF$age==j,'motherID'] %in% IDMothersalive) ) / nFemAge # number of females with mother still alive
-#    }
-
-#  if(sum(IDMothers %in% dataF$who)==0) {PrGrandMotherAlive[j,2] <- 0
-#  }else if(sum(IDMothers %in% dataF$who)>0){
-#    IDGrandMothers <- dataF$motherID[ which(dataF$who  %in% IDMothers) ]
-#    IDGrandMothersalive <- dataF$who[which(dataF$who %in% IDGrandMothers)] # find alive grand mothers
-#    PrGrandMotherAlive[j,2] <- (sum(dataF[dataF$age==j,'motherID'] %in% IDGrandMothersalive) ) / nFemAge # number of females with mother still alive
-#    } 
-#  }
-
-
-PrAlive1 <- data.frame(age=ages, Mother=rep(NA,length(ages)),  GrandMother=rep(NA,length(ages)),nfem=rep(NA,length(ages)) )
-
-  Femage1 <- dataF[dataF$age==1,]                                      
-  nFemAge1 <- nrow(Femage1)  # select subdata for age 1
-  PrAlive[1,4] <- nFemAge1
-  if(nFemAge1==0){
-    PrAlive[1,2] <- NA
-    PrAlive[1,3] <- NA
-  }else if(nFemAge1>0){ 
-    IDmothers1 <-unique(Femage1$motherID) 
-    PrAlive1[1,2] <- sum(IDmothers1 %in% IDMothersAlive) / nFemAge1
-    
-    IDGrandMothers1 <- dataF$motherID[ which(dataF$who  %in% IDmothers1) ]
-    PrAlive1[1,3] <- sum(IDGrandMothers1 %in% IDGrandMothersAlive) / nFemAge1
-    
-  }
-
-PrAlive1
-
 
 
 ##############################################################################
@@ -455,50 +408,6 @@ PrAlive1
   sum(Mother_aliveness_by_age8)
   
   PrAlive
-  
-  #Ego age 8
-  Egoage8 <- dataF[dataF$age==8,] 
-  negoage8 <-nrow(Egoage8)
-  Egoage8.MID <- Egoage8[!is.na(Egoage8$motherID),]
-  Mothers.Alive.ID8 <- dataF[which(dataF$who %in% Egoage8.MID$motherID),]
-  Motherage1.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==1),]
-  Motherage2.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==2),]
-  Motherage3.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==3),]
-  Motherage4.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==4),]
-  Motherage5.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==5),]
-  Motherage6.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==6),]
-  Motherage7.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==7),]
-  Motherage8.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==8),]
-  Motherage9.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==9),]
-  Motherage10.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==10),]
-  Motherage11.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==11),]
-  Motherage12.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==12),]
-  Motherage13.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==13),]
-  Motherage14.8<- Mothers.Alive.ID8[which(Mothers.Alive.ID8$age==14),]
-  nmotherage1.egoage8 <- nrow(Motherage1.8)
-  nmotherage2.egoage8 <- nrow(Motherage2.8)
-  nmotherage3.egoage8 <- nrow(Motherage3.8)
-  nmotherage4.egoage8 <- nrow(Motherage4.8)
-  nmotherage5.egoage8 <- nrow(Motherage5.8)
-  nmotherage6.egoage8 <- nrow(Motherage6.8)
-  nmotherage7.egoage8 <- nrow(Motherage7.8)
-  nmotherage8.egoage8 <- nrow(Motherage8.8)
-  nmotherage9.egoage8 <- nrow(Motherage9.8)
-  nmotherage10.egoage8 <- nrow(Motherage10.8)
-  nmotherage11.egoage8 <- nrow(Motherage11.8)
-  nmotherage12.egoage8 <- nrow(Motherage12.8)
-  nmotherage13.egoage8 <- nrow(Motherage13.8)
-  nmotherage14.egoage8 <- nrow(Motherage14.8)
-  
-  motheragevector8<-c(nmotherage1.egoage8,nmotherage2.egoage8,nmotherage3.egoage8,nmotherage4.egoage8,nmotherage5.egoage8,
-                      nmotherage6.egoage8,nmotherage7.egoage8,nmotherage8.egoage8,nmotherage9.egoage8,nmotherage10.egoage8,
-                      nmotherage11.egoage8,nmotherage12.egoage8,nmotherage13.egoage8,nmotherage14.egoage8)
-  Mother_aliveness_by_age8 <- motheragevector8/negoage8
-  Mother_aliveness_by_age8
-  sum(Mother_aliveness_by_age8)
-  
-  PrAlive
-  
   
   #Ego age 9
   Egoage9 <- dataF[dataF$age==9,] 
@@ -852,6 +761,7 @@ PrAlive1
   negoage1 <-nrow(Egoage1) #number of individuals aged 1
   Egoage1.MID <- Egoage1[!is.na(Egoage1$motherID),] # 1 year olds with mother ID
   IDMothersDeadOrAlive <- unique(dataall[which(dataall$who %in% Egoage1.MID$motherID),'who']) #ID of 1 year olds mothers, regardless of alive/dead status
+  #Need to add step to remove grandmothers that had NA for ID
   IDGMDeadOrAlive <- unique(dataall[which(dataall$who %in% IDMothersDeadOrAlive),'motherID'])
   AliveGMData.egoage1<-dataF[which(dataF$who %in% IDGMDeadOrAlive),]
   GMAge1<- AliveGMData.egoage1[which(AliveGMData.egoage1$age==1),]
@@ -887,8 +797,8 @@ PrAlive1
                      nGMage11.egoage1,nGMage12.egoage1,nGMage13.egoage1,nGMage14.egoage1)
   GM_aliveness_by_age1 <- GMagevector/negoage1
   GM_aliveness_by_age1
-  sum(GM_aliveness_by_age1) #check: it is the same as the total probability of a female of age 1 having her grandmother alive
- 
+  sum(GM_aliveness_by_age1) #check if it is the same as the total probability of a female of age 1 having her grandmother alive in PrAlive
+  
   PrAlive
   
   
@@ -896,8 +806,9 @@ PrAlive1
   Egoage2 <- dataF[dataF$age==2,] #All individuals of age 2 alive at last timestep
   negoage2 <-nrow(Egoage2) #number of individuals aged 2
   Egoage2.MID <- Egoage2[!is.na(Egoage2$motherID),] # 2 year olds with mother ID
-  IDMothersDeadOrAlive2 <- unique(dataall[which(dataall$who %in% Egoage2.MID$motherID),'who']) #ID of 1 year olds mothers, regardless of alive/dead status
+  IDMothersDeadOrAlive2 <- unique(dataall[which(dataall$who %in% Egoage2.MID$motherID),'who']) #ID of 2 year olds mothers, regardless of alive/dead status
   IDGMDeadOrAlive2 <- unique(dataall[which(dataall$who %in% IDMothersDeadOrAlive2),'motherID'])
+  #Need to add step to remove grandmothers that had NA for ID
   AliveGMData.egoage2<-dataF[which(dataF$who %in% IDGMDeadOrAlive2),]
   GMAge1.2<- AliveGMData.egoage2[which(AliveGMData.egoage2$age==1),]
   GMAge2.2<- AliveGMData.egoage2[which(AliveGMData.egoage2$age==2),]
@@ -932,7 +843,7 @@ PrAlive1
                  nGMage11.egoage2,nGMage12.egoage2,nGMage13.egoage2,nGMage14.egoage2)
   GM_aliveness_by_age2 <- GMagevector2/negoage2
   GM_aliveness_by_age2
-  sum(GM_aliveness_by_age2) #check: it is the same as the total probability of a female of age 2 having her grandmother alive
+  sum(GM_aliveness_by_age2) #check if it is the same as the total probability of a female of age 2 having her grandmother alive in PrAlive
   
   PrAlive
   
@@ -1009,7 +920,7 @@ PrAlive1
   sistersAlive2 <- lapply(sistersdupAlive2,unique) 
   avg.sisters2.2<-sum(lengths(sistersAlive2)*(lengths(sistersAlive2)-1))/sum(lengths(sistersAlive2))
   
-  #Average number of sisters in every other age class for an individual of age 1
+  #Average number of sisters in every other age class for an individual of age 2
   avg.sisters1.2<-sum(table(mothersforage2[mothersforage2 %in% mothersforage1]))/nrow(Egoage2)
   
   avg.sisters3.2<-sum(table(mothersforage2[mothersforage2 %in% mothersforage3]))/nrow(Egoage2)
@@ -1061,6 +972,226 @@ PrAlive1
                    avg.sisters13.3,avg.sisters14.3)
   
   sum(sistervector3) 
+  
+  #########################################################################################
+  ###   KINSHIP MATRIX FOR CHILDREN   #####################################################
+  #########################################################################################
+  
+  #EGO AGE 4 AS EXAMPLE
+  
+  Egoage4 <- dataF[dataF$age==4,]
+  negoage4 <-nrow(Egoage4)
+  Age4Mothers <- Egoage4[which(Egoage4$who %in% dataF$motherID),]
+  
+  Age4MothersOffspring <- dataF[which(dataF$motherID %in% Age4Mothers$who),]
+  
+  Offspring4.1 <- Age4MothersOffspring[which(Age4MothersOffspring$age==1),]
+  Offspring4.2 <- Age4MothersOffspring[which(Age4MothersOffspring$age==2),]
+  Offspring4.3 <- Age4MothersOffspring[which(Age4MothersOffspring$age==3),]
+  Offspring4.4 <- Age4MothersOffspring[which(Age4MothersOffspring$age==4),]
+  Offspring4.5 <- Age4MothersOffspring[which(Age4MothersOffspring$age==5),]
+  Offspring4.6 <- Age4MothersOffspring[which(Age4MothersOffspring$age==6),]
+  Offspring4.7 <- Age4MothersOffspring[which(Age4MothersOffspring$age==7),]
+  Offspring4.8 <- Age4MothersOffspring[which(Age4MothersOffspring$age==8),]
+  Offspring4.9 <- Age4MothersOffspring[which(Age4MothersOffspring$age==9),]
+  Offspring4.10 <- Age4MothersOffspring[which(Age4MothersOffspring$age==10),]
+  Offspring4.11 <- Age4MothersOffspring[which(Age4MothersOffspring$age==11),]
+  Offspring4.12 <- Age4MothersOffspring[which(Age4MothersOffspring$age==12),]
+  Offspring4.13 <- Age4MothersOffspring[which(Age4MothersOffspring$age==13),]
+  Offspring4.14 <- Age4MothersOffspring[which(Age4MothersOffspring$age==14),]
+  nOffspring4.1 <- nrow(Offspring4.1)
+  nOffspring4.2 <- nrow(Offspring4.2)
+  nOffspring4.3 <- nrow(Offspring4.3)
+  nOffspring4.4 <- nrow(Offspring4.4)
+  nOffspring4.5 <- nrow(Offspring4.5)
+  nOffspring4.6 <- nrow(Offspring4.6)
+  nOffspring4.7 <- nrow(Offspring4.7)
+  nOffspring4.8 <- nrow(Offspring4.8)
+  nOffspring4.9 <- nrow(Offspring4.9)
+  nOffspring4.10 <- nrow(Offspring4.10)
+  nOffspring4.11 <- nrow(Offspring4.11)
+  nOffspring4.12 <- nrow(Offspring4.12)
+  nOffspring4.13 <- nrow(Offspring4.13)
+  nOffspring4.14 <- nrow(Offspring4.14)
+  
+  offspringvector4<-c(nOffspring4.1,nOffspring4.2,nOffspring4.3,nOffspring4.4,nOffspring4.5,nOffspring4.6,nOffspring4.7,nOffspring4.8,
+                      nOffspring4.9,nOffspring4.10,nOffspring4.11,nOffspring4.12,nOffspring4.13,nOffspring4.14)
+  avgoffspring4 <- offspringvector4/negoage4
+  avgoffspring4
+  sum(avgoffspring4)
+  
+  
+  #########################################################################################
+  ###   KINSHIP MATRIX FOR GRANDCHILDREN    ###############################################
+  #########################################################################################
+  Egoage14<-dataF[dataF$age==14]
+  negoage14 <-nrow(Egoage14)
+  IDdaughtersDeadOrAlive<-unique(dataall[which(dataall$motherID %in% Egoage14$who),'who'])
+  AliveGrandChildren <- dataF[which(dataF$motherID %in% IDdaughtersDeadOrAlive)]
+  
+  nGCAge14.1 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==1),])
+  nGCAge14.2 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==2),])
+  nGCAge14.3 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==3),])
+  nGCAge14.4 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==4),])
+  nGCAge14.5 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==5),])
+  nGCAge14.6 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==6),])
+  nGCAge14.7 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==7),])
+  nGCAge14.8 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==8),])
+  nGCAge14.9 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==9),])
+  nGCAge14.10 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==10),])
+  nGCAge14.11 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==11),])
+  nGCAge14.12 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==12),])
+  nGCAge14.13 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==13),])
+  nGCAge14.14 <-nrow(AliveGrandChildren[which(AliveGrandChildren$age==14),])
+  
+  GCAge14vector <- c(nGCAge14.1,nGCAge14.2,nGCAge14.3,nGCAge14.4,nGCAge14.5,nGCAge14.6,nGCAge14.7,nGCAge14.8,nGCAge14.9,
+                     nGCAge14.10,nGCAge14.11,nGCAge14.12,nGCAge14.13,nGCAge14.14)
+  AvgGC14<- GCAge14vector/negoage14
+  AvgGC14
+  
+  #########################################################################################
+  ###   KINSHIP MATRIX FOR AUNTS    #######################################################
+  #########################################################################################
+  Egoage1 <- dataF[dataF$age==1,] 
+  negoage1 <-nrow(Egoage1) 
+  Egoage1.MID <- Egoage1[!is.na(Egoage1$motherID),] 
+  IDMothersDeadOrAlive <- unique(dataall[which(dataall$who %in% Egoage1.MID$motherID),'who'])
+  IDGMDeadOrAlive <- unique(dataall[which(dataall$who %in% IDMothersDeadOrAlive),'motherID'])
+  
+  
+  AllAunts <- dataF[which(dataF$motherID %in% IDGMDeadOrAlive)] #All alive daughters of ego's grandmother, including her mother
+
+   #Split Aunts by their mother ID
+  GroupAunts <- tapply(X=AllAunts$who,INDEX=AllAunts$motherID)
+  AuntsGrouped <- split(x=AllAunts$who,f=GroupAunts)
+  AuntsGroupedF <- lapply(AuntsGrouped,unique) 
+  
+
+  #After we group AllAunts$who by their mother ID, to get the number of aunts we need to subtract 1 from each group of the list
+  # EXCEPT if the group includes more than one mother, in which case they are all aunts.  
+  
+  #They have to be mothers to an alive individual of the focal age class, and they have to be alive themselves. 
+  MothersAlive.egoage1 <- dataF[which(dataF$who %in% Egoage1$motherID),]
+
+  #Tried with the loop below but couldn't get it to work. 
+  
+  
+n <- c(rep(NA,length(AuntsGroupedF)))
+  
+ for (i in 1:length(AuntsGroupedF)){
+    if (length(which(MothersAlive.egoage1$who %in% AuntsGroupedF[[i]]) > 1)) { 
+      n[i] <- length(AuntsGroupedF[[1]])
+    } else if (length(IDMothersDeadOrAlive[[which(IDMothersDeadOrAlive %in% AuntsGroupedF[[i]])]]) == 1){
+    n[i] <- length(AuntsGroupedF[[1]])-1
+    }
+ }
+
+# This loop would only give us the expected number of aunts for individuals of each class. 
+# We would still need to find a way to split the expected number by age of the aunts too. 
+# This is tricky because after splitting them by mother ID we are left only with the ID of the aunts, 
+# but we don't keep their age. 
+
+# If we split them by age first, and then by mother ID, for each individual in a group of sisters of a given age, 
+# we also need to check if their sisters of other ages have had children. 
+# I haven't figured out how to do this, since the split function 
+# gives the groups new numbers starting from one, it doesn't keep track of mother ID. 
+
+  #Split by age
+  Aunts1 <-AllAunts[AllAunts$age==1,]
+  Aunts2 <-AllAunts[AllAunts$age==2,]
+  Aunts3 <-AllAunts[AllAunts$age==3,]
+  Aunts4 <-AllAunts[AllAunts$age==4,]
+  Aunts5 <-AllAunts[AllAunts$age==5,]
+  Aunts6 <-AllAunts[AllAunts$age==6,]
+  Aunts7 <-AllAunts[AllAunts$age==7,]
+  Aunts8 <-AllAunts[AllAunts$age==8,]
+  Aunts9 <-AllAunts[AllAunts$age==9,]
+  Aunts10 <-AllAunts[AllAunts$age==10,]
+  Aunts11 <-AllAunts[AllAunts$age==11,]
+  Aunts12 <-AllAunts[AllAunts$age==12,]
+  Aunts13 <-AllAunts[AllAunts$age==13,]
+  Aunts14 <-AllAunts[AllAunts$age==14,]
+
+  #Split Aunts by their age and mother ID
+  GroupAunts1 <- tapply(X=Aunts1$who,INDEX=Aunts1$motherID)
+  AuntsGrouped1 <- split(x=Aunts1$who,f=GroupAunts1)
+  AuntsGroupedF1 <- lapply(AuntsGrouped1,unique) 
+  
+  GroupAunts2 <- tapply(X=Aunts2$who,INDEX=Aunts2$motherID)
+  AuntsGrouped2 <- split(x=Aunts2$who,f=GroupAunts2)
+  AuntsGroupedF2 <- lapply(AuntsGrouped2,unique) 
+  
+  GroupAunts3 <- tapply(X=Aunts3$who,INDEX=Aunts3$motherID)
+  AuntsGrouped3 <- split(x=Aunts3$who,f=GroupAunts3)
+  AuntsGroupedF3 <- lapply(AuntsGrouped3,unique) 
+  
+  GroupAunts4 <- tapply(X=Aunts4$who,INDEX=Aunts4$motherID)
+  AuntsGrouped4 <- split(x=Aunts4$who,f=GroupAunts4)
+  AuntsGroupedF4 <- lapply(AuntsGrouped4,unique) 
+  
+  GroupAunts5 <- tapply(X=Aunts5$who,INDEX=Aunts5$motherID)
+  AuntsGrouped5 <- split(x=Aunts5$who,f=GroupAunts5)
+  AuntsGroupedF5 <- lapply(AuntsGrouped5,unique) 
+  
+  GroupAunts6 <- tapply(X=Aunts6$who,INDEX=Aunts6$motherID)
+  AuntsGrouped6 <- split(x=Aunts6$who,f=GroupAunts6)
+  AuntsGroupedF6 <- lapply(AuntsGrouped6,unique) 
+  
+  GroupAunts7 <- tapply(X=Aunts7$who,INDEX=Aunts7$motherID)
+  AuntsGrouped7 <- split(x=Aunts7$who,f=GroupAunts7)
+  AuntsGroupedF7 <- lapply(AuntsGrouped7,unique) 
+  
+  GroupAunts8 <- tapply(X=Aunts8$who,INDEX=Aunts8$motherID)
+  AuntsGrouped8 <- split(x=Aunts8$who,f=GroupAunts8)
+  AuntsGroupedF8 <- lapply(AuntsGrouped8,unique) 
+  
+  GroupAunts9 <- tapply(X=Aunts9$who,INDEX=Aunts9$motherID)
+  AuntsGrouped9 <- split(x=Aunts9$who,f=GroupAunts9)
+  AuntsGroupedF9 <- lapply(AuntsGrouped9,unique) 
+  
+  GroupAunts10 <- tapply(X=Aunts10$who,INDEX=Aunts10$motherID)
+  AuntsGrouped10 <- split(x=Aunts10$who,f=GroupAunts10)
+  AuntsGroupedF10 <- lapply(AuntsGrouped10,unique) 
+  
+  GroupAunts11 <- tapply(X=Aunts11$who,INDEX=Aunts11$motherID)
+  AuntsGrouped11 <- split(x=Aunts11$who,f=GroupAunts11)
+  AuntsGroupedF11 <- lapply(AuntsGrouped11,unique) 
+  
+  GroupAunts12 <- tapply(X=Aunts12$who,INDEX=Aunts12$motherID)
+  AuntsGrouped12 <- split(x=Aunts12$who,f=GroupAunts12)
+  AuntsGroupedF12 <- lapply(AuntsGrouped12,unique) 
+  
+  GroupAunts13 <- tapply(X=Aunts13$who,INDEX=Aunts13$motherID)
+  AuntsGrouped13 <- split(x=Aunts13$who,f=GroupAunts13)
+  AuntsGroupedF13 <- lapply(AuntsGrouped13,unique) 
+  
+  GroupAunts14 <- tapply(X=Aunts14$who,INDEX=Aunts14$motherID)
+  AuntsGrouped14 <- split(x=Aunts14$who,f=GroupAunts14)
+  AuntsGroupedF14 <- lapply(AuntsGrouped14,unique) 
+  
+  mothersAunts1<-c(Aunts1$motherID)
+  mothersAunts2<-c(Aunts2$motherID)
+  mothersAunts3<-c(Aunts3$motherID)
+  mothersAunts4<-c(Aunts4$motherID)
+  mothersAunts5<-c(Aunts5$motherID)
+  mothersAunts6<-c(Aunts6$motherID)
+  mothersAunts7<-c(Aunts7$motherID)
+  mothersAunts8<-c(Aunts8$motherID)
+  mothersAunts9<-c(Aunts9$motherID)
+  mothersAunts10<-c(Aunts10$motherID)
+  mothersAunts11<-c(Aunts11$motherID)
+  mothersAunts12<-c(Aunts12$motherID)
+  mothersAunts13<-c(Aunts13$motherID)
+  mothersAunts14<-c(Aunts14$motherID)
+  
+
+  #########################################################################################
+  ###   KINSHIP MATRIX FOR COUSINS    #####################################################
+  #########################################################################################
+  
+ 
+  
+
 
   
   
