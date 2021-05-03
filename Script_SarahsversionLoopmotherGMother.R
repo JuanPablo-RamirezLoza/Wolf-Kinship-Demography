@@ -10,6 +10,9 @@ library(SciViews)
 library(DescTools)
 load(file="popSim.Rdata")
 popSim2 <- popSim ## CHANGED AGAIN FINAL
+popSim3 <- popSim ## another test
+popSim4 <- popSim # anotherone 4
+popSim5 <- popSim # anotherone 5
 
 
 # all indiv ever lived in the pop
