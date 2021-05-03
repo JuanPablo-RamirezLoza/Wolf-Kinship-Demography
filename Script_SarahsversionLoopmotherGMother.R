@@ -1,6 +1,7 @@
 
 # kinship relationships at equilibrium
 
+
 # Packages used to build the sub-models
 library(NetLogoR)
 library(testthat)
@@ -8,6 +9,8 @@ library(kinship2)
 library(SciViews)
 library(DescTools)
 load(file="popSim.Rdata")
+popSim2 <- popSim ## BALBALBALBA JUST WANT TO SEE IF YOU GET THIS
+
 
 # all indiv ever lived in the pop
 
