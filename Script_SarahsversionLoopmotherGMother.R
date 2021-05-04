@@ -11,6 +11,11 @@ library(DescTools)
 load(file="popSim.Rdata")
 popSim2 <- popSim ## CHANGED AGAIN FINAL
 popSim3 <- popSim ## another test
+<<<<<<< HEAD
+popSim4 <- popSim # anotherone 4
+popSim6 <- popSim # anotherone 6
+=======
+>>>>>>> 96e81b034d25ca15fc30f18cd600e1cfdb7f895c
 
 #popSim
 
