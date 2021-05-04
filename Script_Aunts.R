@@ -244,17 +244,31 @@ for(i in ages){  #loop over ego age
   }else if(n_ego_agei[i]>0){ 
     
     # find mothers' & grandmothers' IDs
-    Mothers.ID <- ego_agei$motherID # mothers ID of ego age i alive at last time step
-    GM.ID <- AllFem$motherID[match(Mothers.ID, AllFem$who )] # all GM (dead and alive) of ego age i alive at last time step
+    Mothers.ID.ego <- ego_agei$motherID # mothers ID of ego age i
+    #    GM.ID <- AllFem$motherID[match(Mothers.ID, AllFem$who )] # all GM (dead and alive) of ego age i alive at last time step
+
     
+    for(j in ages){ # loop over sisters ages
+      sis_agej <- datalastF[datalastF$age==j] #individuals of age j alive at last time step
+      
+      if (j==i){ #same cohort sisters
+        siblingsAlivei <- tapply(X=sis_agej$who,INDEX=sis_agej$motherID)
+        sistersdupAlivei <- split(x=sis_agej$who,f=siblingsAlivei)
+        sistersAlivei <- lapply(sistersdupAlivei,unique) 
+        AvgSisAlive[i,j]<-sum(lengths(sistersAlivei)*(lengths(sistersAlivei)-1))/sum(lengths(sistersAlivei))
+        
+      } else if (j!=i){ #sisters from different cohorts
+        Mothers.ID.sis <- sis_agej$motherID
+        AvgSisAlive[i,j]<- sum(table(Mothers.ID.ego[Mothers.ID.ego %in% Mothers.ID.sis]))/n_ego_agei[i]
+        
     #find grandmother's daughters
-    AllPosAuntsi <- AllFem[which(AllFem$motherID %in% GM.ID),] #all possible aunts (i.e. daughters of grandmother: either mother or aunt of ego)
-    PosAuntsAlivei <- datalastF[which(AllPosAuntsi$who %in% datalastF$who)] #all possible aunts alive at last time step
+#    AllPosAuntsi <- AllFem[which(AllFem$motherID %in% GM.ID),] #all possible aunts (i.e. daughters of grandmother: either mother or aunt of ego)
+#    PosAuntsAlivei <- datalastF[which(AllPosAuntsi$who %in% datalastF$who)] #all possible aunts alive at last time step
     
     #potential aunts split by their mother ID
-    AuntsAlivei <- tapply(X=PosAuntsAlivei$who,INDEX=PosAuntsAlivei$motherID)
-    AuntsdupAlivei <- split(x=PosAuntsAlivei$who,f=AuntsAlivei)
-    AuntsAlivei <- lapply(AuntsdupAlivei,unique) 
+#    AuntsAlivei <- tapply(X=PosAuntsAlivei$who,INDEX=PosAuntsAlivei$motherID)
+#    AuntsdupAlivei <- split(x=PosAuntsAlivei$who,f=AuntsAlivei)
+#    AuntsAlivei <- lapply(AuntsdupAlivei,unique) 
 
   }
 }
