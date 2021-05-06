@@ -57,6 +57,8 @@ sisters <- lapply(sistersdup,unique) # list per brood without duplicates
 datalast <- as.matrix(popSim[[26]])
 datalastF <- datalast[ (datalast$sex=="F" & !is.na(datalast$motherID) ) ,] # keep only females with known mother 
 
+popSim3 <- popSim
+
 #ego IDs
 datalastF$who # ID of females alive with known mothers the last time step
 nego <- nrow(datalastF) # 90 here
