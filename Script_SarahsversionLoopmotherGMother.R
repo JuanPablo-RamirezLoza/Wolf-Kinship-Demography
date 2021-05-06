@@ -11,7 +11,6 @@ library(DescTools)
 load(file="popSim.Rdata")
 
 
-
 # all indiv ever lived in the pop
 
 # calculate relatedness for all indiv alive at the end, and for females alive only
@@ -129,6 +128,7 @@ round(Res_summary,2) # summary per ego age
 kinship_MA # kinship matrix for mothers
 kinship_GMA # kinship matrix for grand mothers
 
+<<<<<<< HEAD
 ####### LOOPS
 
 
@@ -256,6 +256,44 @@ sistervector3<-c(avg.sisters1.3,avg.sisters2.3,avg.sisters3.3,avg.sisters4.3,avg
                  avg.sisters13.3,avg.sisters14.3)
 
 sum(sistervector3) 
+=======
+##############################################################################################
+###           LOOP FOR SISTERS                                                            ####
+##############################################################################################
+
+AvgSisAlive <- matrix(NA, nrow=max(ages),ncol=max(ages))
+
+n_ego_agei <-NULL
+
+for(i in ages){  #loop over ego age
+  ego_agei <- datalastF[datalastF$age==i,] # ego age i alive at last time step
+  n_ego_agei[i] <-nrow(ego_agei) # nb of ego age i
+  
+  if(n_ego_agei[i]==0){
+    AvgSisAlive[i,] <- rep(NA,length(ages))
+    
+  }else if(n_ego_agei[i]>0){ 
+    Mothers.ID.ego <- ego_agei$motherID # mothers ID of ego age i
+ 
+    for(j in ages){ # loop over sisters ages
+      sis_agej <- datalastF[datalastF$age==j] #individuals of age j alive at last time step
+      
+      if (j==i){ #same cohort sisters
+        siblingsAlivei <- tapply(X=sis_agej$who,INDEX=sis_agej$motherID)
+        sistersdupAlivei <- split(x=sis_agej$who,f=siblingsAlivei)
+        sistersAlivei <- lapply(sistersdupAlivei,unique) 
+        AvgSisAlive[i,j]<-sum(lengths(sistersAlivei)*(lengths(sistersAlivei)-1))/sum(lengths(sistersAlivei))
+        
+      } else if (j!=i){ #sisters from different cohorts
+        Mothers.ID.sis <- sis_agej$motherID
+        AvgSisAlive[i,j]<- sum(table(Mothers.ID.ego[Mothers.ID.ego %in% Mothers.ID.sis])*table(Mothers.ID.sis[Mothers.ID.sis %in% Mothers.ID.ego]))/n_ego_agei[i]
+      } # close "if" sisters from different cohorts
+    } #close loop over sisters ages
+  } #close "if" there are more than zero ego age i
+} #close loop over age i
+
+AvgSisAlive # kinship matrix for sisters
+>>>>>>> 1022374a5d9706a612ab468d0efdc651968ac14e
 
 #########################################################################################
 ###   KINSHIP MATRIX FOR CHILDREN   #####################################################
@@ -473,8 +511,36 @@ mothersAunts14<-c(Aunts14$motherID)
 ###   KINSHIP MATRIX FOR COUSINS    #####################################################
 #########################################################################################
 
+#Aunts
+kinship_Aunts <- matrix(NA, nrow=max(ages),ncol=max(ages))
+n_ego_agei <- n_Aunts <-NULL
 
+for(i in ages){  #loop over ego age
+  ego_agei <- datalastF[datalastF$age==i,] # ego age i alive at last time step
+  n_ego_agei[i] <-nrow(ego_agei) # nb of ego age i
+  if(n_ego_agei[i]==0){
+    kinship_Aunts[i,] <- rep(NA,length(ages))
+    
+  }else if(n_ego_agei[i]>0){ 
+    
+    # find mothers & aunts
+    Mothers.ID <- ego_agei$motherID # mothers ID of ego age i
+    GM.ID <- AllFem$motherID[match(Mothers.ID, AllFem$who )] #ID of grandmothers of ego age i
+    AllPosAuntsi <- AllFem[which(AllFem$motherID %in% GM.ID),] #all possible aunts (i.e. daughters of grandmother: either mother or aunt of ego)
+    
+    
+    #potential aunts split by their mother ID
+    AuntsAlivei <- tapply(X=PosAuntsAlivei$who,INDEX=PosAuntsAlivei$motherID)
+    AuntsdupAlivei <- split(x=PosAuntsAlivei$who,f=AuntsAlivei)
+    AuntsAlivei <- lapply(AuntsdupAlivei,unique) 
+    
+  }
+}
 
+grandmotherID <- AllFem[which(AllFem$who %in% datalastF$motherID),'motherID']
 
+c(grandmotherID)
 
+Femdata_withGM <- cbind(datalastF,list(grandmotherID))
+grandmotherID
 
