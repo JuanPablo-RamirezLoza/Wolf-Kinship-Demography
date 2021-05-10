@@ -166,13 +166,9 @@ for(i in ages){  #loop over ego age
       nb.aunts.agej.ego <- nb.sis.agej.ego <- nb.children.agej.ego <- nb.grandchildren.agej.ego <- nb.cousins.agej.ego <- nb.nieces.agej.ego <- NULL # empty object to store results
       
       for(e in 1:nrow(ego_agei)){ # loop over each ego aged i
-        ego.GM.ID <- AllFem[match(ego_agei[e]$motherID, AllFem$who ),]$motherID # ego's grand mother ID, dead or alive
         
-        #in file to test loop had to change this line. Here, the test version of the line (below) doesn't work, 
-        #but the original one above does.  
-        # Loop test line:
-        #ego.GM.ID <- AllFem[match(ego_agei[['motherID']][e], AllFem$who ),]$motherID
-        
+        ego.GM.ID <- GM.ID[e] #ego's grand mother ID, dead or alive
+
         #For nieces
         DaugthersOfEgoMother <- AllFem[which(AllFem$motherID==ego_agei$motherID[e]),] #Get all the daughters of ego's mother
         AllSistersDeadorAlive <- DaugthersOfEgoMother[-which(DaugthersOfEgoMother$who==ego_agei$who[e]),] #get only ego's sisters (eliminate ego)
