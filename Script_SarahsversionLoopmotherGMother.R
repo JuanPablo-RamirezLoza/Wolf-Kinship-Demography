@@ -31,6 +31,10 @@ allwithparents <- dataall[!is.na(dataall$motherID),] #se data for individuals wi
 # for now, keep females only, and female-related kin only
 AllFem <- allwithparents[allwithparents$sex=="F",]  # all females with known mother
 
+# Ages - calculated among all females with known mother ever alive
+ages<- range(AllFem$age)
+
+
 # ID of all mothers and grandmothers ever lived in pop
 IDMothers <- unique(AllFem[,'motherID'] ) # mothers of at least one female
 IDGrandMothers <- unique( AllFem[which(AllFem$who %in% IDMothers),'motherID'] )# grand mother of at least one female
@@ -63,8 +67,6 @@ siblingsAlive <- tapply(X=datalastF$who,INDEX=datalastF$motherID) # all females 
 sistersdupAlive <- split(x=datalastF$who,f=siblingsAlive)
 sistersAlive <- lapply(sistersdupAlive,unique)
 
-table(datalastF$age)
-ages<- 1:11
 
 ############################################################
 ##              LOOP FOR ALL KIN                          ##
