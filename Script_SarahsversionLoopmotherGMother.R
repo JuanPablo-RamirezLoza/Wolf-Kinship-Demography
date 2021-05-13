@@ -9,9 +9,8 @@ library(SciViews)
 library(DescTools)
 load(file="popSim.Rdata")
 
+# all indiv ever lived in the pop, list with t elements (pop at each time step)
 popSim
-
-# all indiv ever lived in the pop
 
 # calculate relatedness for all indiv alive at the end, and for females alive only
 #withParentID <- NLwith(agents = popSim[[(nYearSim + 1)]], var = "motherID", val = 0:1000000) # extract individuals with parent ID
