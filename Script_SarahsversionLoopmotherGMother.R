@@ -1,4 +1,3 @@
-
 # kinship relationships at equilibrium
 
 
@@ -10,6 +9,7 @@ library(SciViews)
 library(DescTools)
 load(file="popSim.Rdata")
 
+#popSim
 
 # all indiv ever lived in the pop
 
