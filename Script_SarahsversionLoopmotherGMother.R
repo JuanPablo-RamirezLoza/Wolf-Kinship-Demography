@@ -212,13 +212,13 @@ for(i in ages){  #loop over ego age
 rsummary <- round(Res_summary,2) # summary per ego age
 
 output <- list(res=rsummary,
-               K_M=kinship_Mother,
-               K_GM=kinship_Grandmother,
-               K_S=kinship_Sisters,
-               K_A=kinship_Aunts,
-               K_Ch=kinship_Children,
-               K_Co=kinship_Cousins,
-               K_N=kinship_Nieces)
+               K_Mothers=kinship_Mother,
+               K_GrandMothers=kinship_Grandmother,
+               K_Sisters=kinship_Sisters,
+               K_Aunts=kinship_Aunts,
+               K_Children=kinship_Children,
+               K_Coousins=kinship_Cousins,
+               K_Nieces=kinship_Nieces)
 return(output)
 }
 
