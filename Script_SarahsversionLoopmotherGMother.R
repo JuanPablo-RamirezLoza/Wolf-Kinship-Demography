@@ -1,26 +1,21 @@
-# kinship relationships at equilibrium
+# Funtion to calculate kinship relationships at equilibrium 
+load(file="popSim.Rdata")
 
-
-# Packages used to build the sub-models
+KinshipStructure <- function(popSim){ # entry = popSim which contains the result of one simulation replicate from the IBM
+  # popSim contains all indiv that ever lived in the pop, it is a list with t elements (pop at each time step)
+  
+# Packages needed
 library(NetLogoR)
 library(testthat)
 library(kinship2)
 library(SciViews)
 library(DescTools)
-load(file="popSim.Rdata")
-
-# all indiv ever lived in the pop, list with t elements (pop at each time step)
-popSim
 
 # For individuals ever alive in the pop (dead or not at last time step)
 dataall  <- unique(do.call(rbind, popSim)  ) # all indiv ever lived in population
 allwithparents <- dataall[!is.na(dataall$motherID),] #se data for individuals with known parents only
-#### What does the comma do? 
-#### comma => take all columns (index of lines to keep before comma, index of columns after comma). Here we want to keep all columns, just the line without NA for motherID
-
-# for now, keep females only, and female-related kin only
-AllFem <- allwithparents[allwithparents$sex=="F",]  # all females with known mother
-
+# keep only female with know mother ID (all except founder individuals)
+AllFem <- allwithparents[allwithparents$sex=="F",] 
 # Ages - calculated among all females with known mother ever alive
 ages<- min(AllFem$age):max(AllFem$age)
 
@@ -59,13 +54,12 @@ sistersAlive <- lapply(sistersdupAlive,unique)
 
 
 ############################################################
-##              LOOP FOR ALL KIN                          ##
+##              CALCULATE KINSHIP STRUCTURE               ##
 ############################################################
 
 #Mother & Grandmother
 nb_MotherAlive <- kinship_Mother <- matrix(NA, nrow=max(ages),ncol=max(ages))
 nb_GrandmotherAlive <- kinship_Grandmother <- matrix(NA, nrow=max(ages),ncol=max(ages))
-
 n_MA <- n_GMA <-Pr_MA_egoagei <- Pr_GMA_egoagei <-NULL
 mums <- list()
 
@@ -215,4 +209,15 @@ for(i in ages){  #loop over ego age
   Res_summary[i,"Avg_Nie"] <- sum(kinship_Nieces[i,])
 } # end loop on ego's age
 
-round(Res_summary,2) # summary per ego age
+rsummary <- round(Res_summary,2) # summary per ego age
+
+output <- list(rsummary,
+               kinship_Mother,
+               kinship_Grandmother,
+               kinship_Sisters,
+               kinship_Aunts,
+               kinship_Children,
+               kinship_Cousins,
+               kinship_Nieces)
+return(output)
+}
