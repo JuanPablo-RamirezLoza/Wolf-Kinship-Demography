@@ -22,7 +22,7 @@ allwithparents <- dataall[!is.na(dataall$motherID),] #se data for individuals wi
 AllFem <- allwithparents[allwithparents$sex=="F",]  # all females with known mother
 
 # Ages - calculated among all females with known mother ever alive
-ages<- range(AllFem$age)
+ages<- min(AllFem$age):max(AllFem$age)
 
 
 # ID of all mothers and grandmothers ever lived in pop
@@ -212,7 +212,7 @@ for(i in ages){  #loop over ego age
   Res_summary[i,"Avg_Ch"] <- sum(kinship_Children[i,])
   Res_summary[i,"Avg_GCh"] <- sum(kinship_GrandChildren[i,])
   Res_summary[i,"Avg_Cou"] <- sum(kinship_Cousins[i,])
-  Res_summary.LT[i,"Avg_Nie"] <- sum(kinship_Nieces[i,])
+  Res_summary[i,"Avg_Nie"] <- sum(kinship_Nieces[i,])
 } # end loop on ego's age
 
 round(Res_summary,2) # summary per ego age
