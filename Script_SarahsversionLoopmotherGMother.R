@@ -12,15 +12,6 @@ load(file="popSim.Rdata")
 # all indiv ever lived in the pop, list with t elements (pop at each time step)
 popSim
 
-# calculate relatedness for all indiv alive at the end, and for females alive only
-#withParentID <- NLwith(agents = popSim[[(nYearSim + 1)]], var = "motherID", val = 0:1000000) # extract individuals with parent ID
-#FemwithParentID <- NLwith(agents = withParentID, var = "sex", val = "F") # females with parent ID
-#allRelatedness <- relatedness(listAllInd = popSim, whoInd = of(agents = withParentID, var = "who"))
-#FemRelatedness <- relatedness(listAllInd = popSim, whoInd = of(agents = FemwithParentID, var = "who"))
-
-#dim(allRelatedness)
-#dim(FemRelatedness)
-
 # For individuals ever alive in the pop (dead or not at last time step)
 dataall  <- unique(do.call(rbind, popSim)  ) # all indiv ever lived in population
 allwithparents <- dataall[!is.na(dataall$motherID),] #se data for individuals with known parents only
