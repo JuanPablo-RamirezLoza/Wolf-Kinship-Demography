@@ -1,6 +1,6 @@
-# Funtion to calculate kinship relationships at equilibrium 
-load(file="popSim.Rdata")
+# Make a funtion to calculate kinship relationships at equilibrium 
 
+# Create function to calculate kinship structure
 KinshipStructure <- function(popSim){ # entry = popSim which contains the result of one simulation replicate from the IBM
   # popSim contains all indiv that ever lived in the pop, it is a list with t elements (pop at each time step)
   
@@ -211,13 +211,19 @@ for(i in ages){  #loop over ego age
 
 rsummary <- round(Res_summary,2) # summary per ego age
 
-output <- list(rsummary,
-               kinship_Mother,
-               kinship_Grandmother,
-               kinship_Sisters,
-               kinship_Aunts,
-               kinship_Children,
-               kinship_Cousins,
-               kinship_Nieces)
+output <- list(res=rsummary,
+               K_M=kinship_Mother,
+               K_GM=kinship_Grandmother,
+               K_S=kinship_Sisters,
+               K_A=kinship_Aunts,
+               K_Ch=kinship_Children,
+               K_Co=kinship_Cousins,
+               K_N=kinship_Nieces)
 return(output)
 }
+
+# load example date
+load(file="popSim.Rdata")
+
+# apply function to data 
+KinshipStructure(popSim)
