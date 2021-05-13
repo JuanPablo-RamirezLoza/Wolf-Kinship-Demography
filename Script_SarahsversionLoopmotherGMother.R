@@ -9,7 +9,7 @@ library(SciViews)
 library(DescTools)
 load(file="popSim.Rdata")
 
-#popSim
+popSim
 
 # all indiv ever lived in the pop
 
@@ -62,11 +62,6 @@ AgeGrandMothersAlive <- datalastF$age[datalastF$who %in% IDGrandMothers]
 siblingsAlive <- tapply(X=datalastF$who,INDEX=datalastF$motherID) # all females arranged in a list in same component with their sisters
 sistersdupAlive <- split(x=datalastF$who,f=siblingsAlive)
 sistersAlive <- lapply(sistersdupAlive,unique)
-
-# check this is correct
-# for sisters #1940 and  #2783 should be 12 and 7 yo
-datalastF[datalastF$who=='1940',]
-datalastF[datalastF$who=='2783',]
 
 table(datalastF$age)
 ages<- 1:11
